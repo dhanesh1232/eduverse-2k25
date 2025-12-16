@@ -16,7 +16,7 @@ export function generatePassword(name: string, length = 4) {
   const randomSpecial =
     specialChars[Math.floor(Math.random() * specialChars.length)];
   const pswd = `${namePrefix}${randomDigits}${randomSpecial}`;
-  return pswd;
+  return pswd.trim();
 }
 
 export const CLG_CODE = (name: string) => {
