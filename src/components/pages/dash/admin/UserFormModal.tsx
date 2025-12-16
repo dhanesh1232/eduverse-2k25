@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCallback, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { useUsers } from "@/context/userProvider";
+import { defaultForm, useUsers } from "@/context/userProvider";
 import {
   Select,
   SelectContent,
@@ -27,18 +27,10 @@ type Student = {
   customId?: string;
 };
 
-const defaultForm = {
-  id: "",
-  name: "",
-  phone: "",
-  email: "",
-  extra: "",
-  student: "",
-};
 export function UserFormModal() {
-  const { role, editingUser, close, triggerRefresh, code } = useUsers();
+  const { role, editingUser, close, triggerRefresh, code, form, setForm } =
+    useUsers();
   const [students, setStudents] = useState<Student[]>([]);
-  const [form, setForm] = useState(defaultForm);
   const [isSaving, setIsSaving] = useState(false);
   const [generatingId, setGeneratingId] = useState(false);
 
@@ -83,7 +75,7 @@ export function UserFormModal() {
 
       generateId();
     }
-  }, [role, code]);
+  }, [role, code, setForm]);
 
   const fetchSudents = useCallback(async () => {
     const res = await fetch(`/api/users/students`, {
@@ -106,7 +98,7 @@ export function UserFormModal() {
   if (!role) return null;
 
   const validateForm = () => {
-    if (!form.id.trim()) {
+    if (!form?.id?.trim()) {
       return false;
     }
     if (!form.name.trim()) {
@@ -115,13 +107,13 @@ export function UserFormModal() {
     if (!form.phone.trim()) {
       return false;
     }
-    if (role !== "PARENT" && !form.extra.trim()) {
+    if (role !== "PARENT" && !form.extra?.trim()) {
       return false;
     }
-    if (role === "PARENT" && !form.student.trim()) {
+    if (role === "PARENT" && !form.student?.trim()) {
       return false;
     }
-    if (form.email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
+    if (form.email?.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form?.email)) {
       return false;
     }
     return true;
@@ -137,7 +129,6 @@ export function UserFormModal() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          role,
           ...form,
         }),
       });

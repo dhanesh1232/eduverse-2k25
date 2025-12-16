@@ -1,3 +1,5 @@
+// appp/api/users/route.js
+
 import dbConnect from "@/lib/connection";
 import { User } from "@/models/user";
 import { generatePassword, hashPassword } from "@/lib/password_handles";
@@ -52,7 +54,7 @@ export async function POST(req) {
 
   const metadata = buildMetadata(role, extra, student);
 
-  const user = await User.create({
+  const userData = {
     collegeId: session.user.collegeId,
     role,
     name,
@@ -60,11 +62,16 @@ export async function POST(req) {
     email: email.trim().toLowerCase(),
     password: passwordHash,
     isActive: true,
-    metadata,
-    studentId: student,
     status: "invited",
     customId: id,
-  });
+    metadata,
+  };
+
+  if (role === "PARENT" && student) {
+    userData.studentId = student;
+  }
+
+  const user = await User.create(userData);
 
   await sendCredentialsEmail({
     to: email,

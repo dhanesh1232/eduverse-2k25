@@ -98,7 +98,8 @@ const UserSchema = new Schema<UserDocument>(
     studentId: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: function (this: UserDocument) {
+      default: null,
+      required: function () {
         return this.role === "PARENT";
       },
     },

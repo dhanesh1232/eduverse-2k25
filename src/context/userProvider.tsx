@@ -11,6 +11,7 @@ export type UserPayload = {
   phone: string;
   email?: string;
   extra?: string; // class / subject / student name
+  student?: string; // student id
 };
 
 type UsersContextType = {
@@ -22,6 +23,18 @@ type UsersContextType = {
   refreshKey: number;
   triggerRefresh: () => void;
   code?: string;
+  form: UserPayload;
+  setForm: React.Dispatch<React.SetStateAction<UserPayload>>;
+};
+
+export const defaultForm: UserPayload = {
+  id: "",
+  role: "STUDENT",
+  name: "",
+  phone: "",
+  email: "",
+  extra: "",
+  student: "",
 };
 
 const UsersContext = createContext<UsersContextType | null>(null);
@@ -31,6 +44,7 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
   const [editingUser, setEditingUser] = useState<UserPayload | undefined>();
   const [refreshKey, setRefreshKey] = useState(0);
   const [code, setCode] = useState(undefined);
+  const [userForm, setUserForm] = useState(defaultForm);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,16 +60,28 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
 
   const openAdd = (role: UserRole) => {
     setRole(role);
+    setUserForm((p) => ({
+      ...p,
+      role,
+    }));
     setEditingUser(undefined);
   };
 
   const openEdit = (user: UserPayload) => {
     setRole(user.role);
+    setUserForm((p) => ({
+      ...p,
+      role: user.role,
+    }));
     setEditingUser(user);
   };
 
   const close = () => {
     setRole(null);
+    setUserForm((p) => ({
+      ...p,
+      role: "STUDENT",
+    }));
     setEditingUser(undefined);
   };
 
@@ -72,6 +98,8 @@ export function UsersProvider({ children }: { children: React.ReactNode }) {
         refreshKey,
         triggerRefresh,
         code,
+        form: userForm,
+        setForm: setUserForm,
       }}
     >
       {children}
