@@ -61,11 +61,6 @@ export const authOptions = {
           throw new Error("Invalid password");
         }
 
-        if (user.status === "invited") {
-          user.status = "active";
-          await user.save();
-        }
-
         return {
           id: user._id.toString(),
           email: user.email,
@@ -96,6 +91,13 @@ export const authOptions = {
     },
 
     async session({ session, token }) {
+      await dbConnect();
+      const user = await User.findById(token.id);
+      if (user.status === "invited") {
+        user.status = "active";
+        await user.save();
+      }
+
       if (session.user) {
         session.user.id = token.id;
         session.user.role = token.role;
