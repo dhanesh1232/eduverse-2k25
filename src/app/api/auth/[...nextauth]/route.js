@@ -8,7 +8,9 @@ import { User } from "@/models/user";
 import { verifyPassword } from "@/lib/password_handles";
 
 const isProd = process.env.NODE_ENV === "production";
-const domain = isProd ? process.env.NEXTAUTH_URL : undefined;
+const domain = isProd
+  ? process.env.AUTH_DOMAIN || "eduverse-one-tau.vercel.app"
+  : undefined;
 
 const getCookiesSettings = () => ({
   sessionToken: {
