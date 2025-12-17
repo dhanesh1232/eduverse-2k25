@@ -76,8 +76,6 @@ export default function CollegeAdminRegister() {
     e.preventDefault();
     if (!isFormValid) return;
 
-    console.log("REGISTER DATA:", form);
-
     try {
       const res = await registerApi.run({
         options: {
@@ -110,7 +108,7 @@ export default function CollegeAdminRegister() {
           </p>
         </div>
         <p className="text-sm text-indigo-300">
-          © {new Date().getFullYear()} Your Company Name
+          © {new Date().getFullYear()} EduVerse
         </p>
       </div>
 

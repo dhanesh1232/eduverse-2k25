@@ -84,7 +84,7 @@ export default function LoginPage() {
           </p>
         </div>
         <p className="text-sm text-indigo-300">
-          © {new Date().getFullYear()} Your Company Name
+          © {new Date().getFullYear()} EduVerse
         </p>
       </div>
 
@@ -93,7 +93,7 @@ export default function LoginPage() {
         <div className="w-full max-w-md bg-white/80 rounded-xl shadow-md p-8">
           <Logo />
 
-          <h2 className="text-2xl mt-4 font-semibold">Admin Login</h2>
+          <h2 className="text-2xl mt-4 font-semibold">Login</h2>
           <p className="text-sm text-gray-500 mb-6">
             Sign in to manage your institution
           </p>

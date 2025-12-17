@@ -1,5 +1,4 @@
 // app/api/auth/[...nextauth].js
-
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 
@@ -22,6 +21,7 @@ const getCookiesSettings = () => ({
     },
   },
 });
+
 export const authOptions = {
   providers: [
     Credentials({

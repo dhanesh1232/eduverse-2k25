@@ -145,20 +145,25 @@ export function UserFormModal() {
       } else {
         toast.success("User updated successfully");
       }
+      setForm(defaultForm);
     } catch (err) {
       console.log(err);
       toast.error((err as Error).message || "Something went wrong");
     } finally {
       setIsSaving(false);
-      setForm(defaultForm);
     }
 
     triggerRefresh();
     close();
   };
 
+  const onClose = () => {
+    setForm(defaultForm);
+    close();
+  };
+
   return (
-    <Dialog open={!!role} onOpenChange={close}>
+    <Dialog open={!!role} onOpenChange={onClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
@@ -216,7 +221,7 @@ export function UserFormModal() {
           )}
 
           <Input
-            placeholder="Email (optional)"
+            placeholder="Email"
             value={form.email}
             onChange={(e) => setForm({ ...form, email: e.target.value })}
           />

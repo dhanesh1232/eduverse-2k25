@@ -36,6 +36,16 @@ export async function POST(req) {
   }
 
   const { role, name, phone, email, student, extra, id } = await req.json();
+  if (!role || !name || !phone || !email) {
+    return ErrorHandles.BadRequest("Missing required fields");
+  }
+  const emUser = await User.findOne({
+    email: email.trim().toLowerCase(),
+  });
+
+  if (emUser) {
+    return ErrorHandles.BadRequest("Email already exists");
+  }
 
   const exUser = await User.findOne({
     email: email.trim().toLowerCase(),
