@@ -15,7 +15,6 @@ const DiscussionSchema: Schema = new Schema<IDiscussion>({
   createdAt: { type: Date, default: Date.now },
 });
 
-export const Discussion = mongoose.model<IDiscussion>(
-  "Discussion",
-  DiscussionSchema
-);
+export const Discussion =
+  mongoose.models.Discussion ||
+  mongoose.model<IDiscussion>("Discussion", DiscussionSchema);

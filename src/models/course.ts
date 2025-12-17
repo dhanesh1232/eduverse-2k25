@@ -14,6 +14,15 @@ const courseSchema = new mongoose.Schema({
     ref: "User",
     require: true,
   },
+  grade: {
+    type: String,
+    require: true,
+  },
+  section: {
+    type: String,
+    require: true,
+  },
+
   studentIds: [
     {
       type: mongoose.Schema.Types.ObjectId,

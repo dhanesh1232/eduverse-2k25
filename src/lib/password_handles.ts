@@ -12,7 +12,7 @@ export async function verifyPassword(password: string, hash: string) {
 export function generatePassword(name: string, length = 4) {
   const namePrefix = name.replace(/\s/g, "").slice(0, length).toUpperCase();
   const randomDigits = Math.floor(1000 + Math.random() * 9000);
-  const specialChars = "!@#$%^&*";
+  const specialChars = "!#$%&";
   const randomSpecial =
     specialChars[Math.floor(Math.random() * specialChars.length)];
   const pswd = `${namePrefix}${randomDigits}${randomSpecial}`;

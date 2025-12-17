@@ -8,7 +8,7 @@ export default function Page() {
   const params = useParams();
   return (
     <ClassesPage
-      basePath={`/${session?.user?.id}/teacher/classes/${params.classId}}`}
+      basePath={`/${session?.user?.id}/admin/classes/${params.classId}}`}
     />
   );
 }

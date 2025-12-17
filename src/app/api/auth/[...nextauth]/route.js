@@ -64,6 +64,7 @@ export const authOptions = {
           email: user.email,
           role: user.role,
           collegeId: user.collegeId.toString(),
+          name: user.name,
         };
       },
     }),
@@ -84,6 +85,7 @@ export const authOptions = {
         token.id = user.id;
         token.role = user.role;
         token.collegeId = user.collegeId;
+        token.name = user.name;
       }
       return token;
     },
@@ -100,6 +102,7 @@ export const authOptions = {
         session.user.id = token.id;
         session.user.role = token.role;
         session.user.collegeId = token.collegeId;
+        session.user.name = user?.name ?? token.name;
       }
       return session;
     },

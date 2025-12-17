@@ -1,19 +1,25 @@
+import { requireRole } from "@/lib/auth";
+import dbConnect from "@/lib/connection";
+import { getUserFromRequest } from "@/lib/getUser";
 import { ClassLesson } from "@/models/class";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
+  await dbConnect();
   const user = await getUserFromRequest(req);
-  requireRole(user, ["teacher"]);
+  requireRole(user, ["TEACHER"]);
 
   const body = await req.json();
-  const { courseId, title, videoUrl, order } = body;
+  const { courseId, title, videoUrl, order, subject, description } = body;
 
   const cls = await ClassLesson.create({
     courseId,
     title,
+    subject,
     videoUrl,
     order,
     createdBy: user.id,
+    description,
   });
 
   return NextResponse.json(cls);

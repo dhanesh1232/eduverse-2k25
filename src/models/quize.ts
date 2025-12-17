@@ -7,18 +7,20 @@ export interface IQuiz extends Document {
     question: string;
     options: string[];
     correctAnswer: number;
+    explanation?: string;
   }[];
   createdBy: mongoose.Types.ObjectId;
   createdAt: Date;
 }
 
 const QuizSchema: Schema = new Schema<IQuiz>({
-  classId: { type: Schema.Types.ObjectId, ref: "Class", required: true },
+  classId: { type: Schema.Types.ObjectId, ref: "ClassLesson", required: true },
   questions: [
     {
       question: { type: String, required: true },
       options: [{ type: String, required: true }],
       correctAnswer: { type: Number, required: true },
+      explanation: { type: String, default: "" },
     },
   ],
   createdBy: { type: Schema.Types.ObjectId, ref: "User", required: true },
