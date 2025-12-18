@@ -5,8 +5,6 @@ import {
   GraduationCap,
   Pencil,
   Plus,
-  LayoutGrid,
-  List,
   Check,
   ChevronsUpDown,
   X,
@@ -29,14 +27,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { StatusBadge } from "@/components/pages/dash/admin/StatusBadge";
 import {
   Select,
@@ -92,7 +82,6 @@ const defaultForm: ClassForm = {
 ─────────────────────────── */
 
 export default function CoursesList({ basePath }: { basePath?: string }) {
-  const [view, setView] = React.useState<"card" | "table">("card");
   const [query, setQuery] = React.useState("");
   const [status, setStatus] = React.useState<StatusTypes>("all");
   const { data: session } = useSession();
@@ -231,23 +220,6 @@ export default function CoursesList({ basePath }: { basePath?: string }) {
             <SelectItem value="inactive">Inactive</SelectItem>
           </SelectContent>
         </Select>
-
-        <div className="ml-auto flex gap-1">
-          <Button
-            size="icon"
-            variant={view === "card" ? "default" : "outline"}
-            onClick={() => setView("card")}
-          >
-            <LayoutGrid className="h-4 w-4" />
-          </Button>
-          <Button
-            size="icon"
-            variant={view === "table" ? "default" : "outline"}
-            onClick={() => setView("table")}
-          >
-            <List className="h-4 w-4" />
-          </Button>
-        </div>
       </div>
 
       {/* Content */}
@@ -262,30 +234,19 @@ export default function CoursesList({ basePath }: { basePath?: string }) {
         </div>
       ) : (
         <>
-          {view === "card" ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {filtered.map((c) => (
-                <ClassCard
-                  key={c._id}
-                  data={c}
-                  onEdit={() => {
-                    setSelectedClass(c);
-                    setModalOpen(true);
-                  }}
-                  path={basePath}
-                />
-              ))}
-            </div>
-          ) : (
-            <ClassTable
-              data={filtered}
-              onEdit={(c: any) => {
-                setSelectedClass(c);
-                setModalOpen(true);
-              }}
-              path={basePath}
-            />
-          )}
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+            {filtered.map((c) => (
+              <ClassCard
+                key={c._id}
+                data={c}
+                onEdit={() => {
+                  setSelectedClass(c);
+                  setModalOpen(true);
+                }}
+                path={basePath}
+              />
+            ))}
+          </div>
         </>
       )}
 
@@ -471,48 +432,5 @@ function ClassCard({ data, onEdit, path }: any) {
         </CardContent>
       </Card>
     </Link>
-  );
-}
-
-/* ───────────────────────────
-   TABLE
-─────────────────────────── */
-
-function ClassTable({ data, onEdit, path }: any) {
-  return (
-    <Card className="py-0">
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Class</TableHead>
-            <TableHead>Teacher</TableHead>
-            <TableHead>Students</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead />
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {data.map((c: any) => (
-            <TableRow key={c._id}>
-              <Link href={`${path}/${c._id}`}>
-                <TableCell>
-                  Grade {c.grade} – {c.section}
-                </TableCell>
-                <TableCell>{c.teacherId.name}</TableCell>
-                <TableCell>{c.studentIds.length}</TableCell>
-                <TableCell>
-                  <StatusBadge status={c.isActive ? "active" : "inactive"} />
-                </TableCell>
-                <TableCell className="text-right">
-                  <Button size="icon" variant="ghost" onClick={() => onEdit(c)}>
-                    <Pencil className="h-4 w-4" />
-                  </Button>
-                </TableCell>
-              </Link>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Card>
   );
 }
