@@ -226,6 +226,8 @@ export function Field({
   );
 }
 
+/* ---------- Reusable Password Field ---------- */
+
 export function PasswordField({
   show,
   setShow,
